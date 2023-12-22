@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  clerkId   String  @id @map("_id")
+  email     String  @unique
+  username  String  @unique
+  firstName String
+  lastName  String
+  photo     String
+  events    Event[]
+  Order     Order[]
+}
+
+model Event {
+  id            String   @id @map("_id")
+  title         String
+  description   String?
+  location      String?
+  createdAt     DateTime @default(now())
+  imageUrl      String
+  startDateTime DateTime @default(now())
+  endDateTime   DateTime @default(now())
+  price         String?
+  isFree        Boolean  @default(false)
+  url           String?
+  category      Category @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  organizer     User     @relation(fields: [organizerId], references: [clerkId])
+  organizerId   String
+  Order         Order[]
+}
+
+model Category {
+  id     String  @id @map("_id")
+  name   String  @unique
+  events Event[]
+}
+
+model Order {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  stripeId    String   @unique
+  totalAmount String
+  event       Event    @relation(fields: [eventId], references: [id])
+  eventId     String
+  buyer       User     @relation(fields: [buyerId], references: [clerkId])
+  buyerId     String
+}
