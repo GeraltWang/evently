@@ -11,7 +11,8 @@ datasource db {
 }
 
 model User {
-  clerkId   String  @id @map("_id")
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId   String  @unique
   email     String  @unique
   username  String  @unique
   firstName String
@@ -22,7 +23,7 @@ model User {
 }
 
 model Event {
-  id            String   @id @map("_id")
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
   title         String
   description   String?
   location      String?
@@ -34,14 +35,14 @@ model Event {
   isFree        Boolean  @default(false)
   url           String?
   category      Category @relation(fields: [categoryId], references: [id])
-  categoryId    String
+  categoryId    String   @db.ObjectId
   organizer     User     @relation(fields: [organizerId], references: [clerkId])
   organizerId   String
   Order         Order[]
 }
 
 model Category {
-  id     String  @id @map("_id")
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
   name   String  @unique
   events Event[]
 }
@@ -52,7 +53,7 @@ model Order {
   stripeId    String   @unique
   totalAmount String
   event       Event    @relation(fields: [eventId], references: [id])
-  eventId     String
+  eventId     String   @db.ObjectId
   buyer       User     @relation(fields: [buyerId], references: [clerkId])
   buyerId     String
 }
