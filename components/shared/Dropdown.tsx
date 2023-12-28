@@ -40,6 +40,7 @@ const Dropdown = ({ value, onChangeHandler }: Props) => {
 		createCategory({
 			categoryName: newCategory.trim(),
 		}).then(category => {
+			if (!category) return
 			setCategories(state => [...state, category])
 		})
 	}
@@ -61,7 +62,7 @@ const Dropdown = ({ value, onChangeHandler }: Props) => {
 			<SelectContent>
 				{categories.length !== 0 &&
 					categories.map(category => (
-						<SelectItem key={category.id} value={category.id} className=' select-item p-regular-40'>
+						<SelectItem key={category.id} value={category.id!} className=' select-item p-regular-40'>
 							{category.name}
 						</SelectItem>
 					))}
