@@ -18,17 +18,28 @@ import FileUploader from './FileUploader'
 import { Checkbox } from '../ui/checkbox'
 import { useUploadThing } from '@/lib/uploadthing'
 import { useRouter } from 'next/navigation'
-import { createEvent } from '@/lib/actions/event.actions'
+import { createEvent, updateEvent } from '@/lib/actions/event.actions'
+import { IEvent } from '@/types'
 
 interface Props {
 	userId: string
 	type: 'Create' | 'Update'
+	event?: IEvent
+	eventId?: string
 }
 
-const EventForm = ({ userId, type }: Props) => {
+const EventForm = ({ userId, type, event, eventId }: Props) => {
 	const [files, setFiles] = useState<File[]>([])
 
-	const initialValues = eventDefaultValues
+	// 表单初始内容
+	const initialValues =
+		event && type === 'Update'
+			? {
+					...event,
+					startDateTime: new Date(event.startDateTime),
+					endDateTime: new Date(event.endDateTime),
+			  }
+			: eventDefaultValues
 
 	const { startUpload } = useUploadThing('imageUploader')
 
@@ -36,6 +47,7 @@ const EventForm = ({ userId, type }: Props) => {
 
 	const form = useForm<z.infer<typeof eventFormSchema>>({
 		resolver: zodResolver(eventFormSchema),
+		// @ts-ignore
 		defaultValues: {
 			...initialValues,
 		},
@@ -63,6 +75,30 @@ const EventForm = ({ userId, type }: Props) => {
 				if (newEvent) {
 					form.reset()
 					router.push(`/events/${newEvent.id}`)
+				}
+			} catch (error) {
+				console.log(error)
+			}
+		}
+
+		if (type === 'Update') {
+			if (!eventId) {
+				router.back()
+				return
+			}
+			try {
+				const updatedEvent = await updateEvent({
+					event: {
+						...values,
+						id: eventId,
+						imageUrl: uploadedImageUrl,
+					},
+					userId,
+					path: `/events/${eventId}`,
+				})
+				if (updatedEvent) {
+					form.reset()
+					router.push(`/events/${updatedEvent.id}`)
 				}
 			} catch (error) {
 				console.log(error)

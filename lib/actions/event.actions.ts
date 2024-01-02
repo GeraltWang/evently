@@ -2,7 +2,7 @@
 import prisma from '@/prisma/client'
 import { revalidatePath } from 'next/cache'
 import { handleError } from '../utils'
-import { CreateEventParams, DeleteEventParams, GetAllEventsParams } from '@/types'
+import { CreateEventParams, DeleteEventParams, GetAllEventsParams, UpdateEventParams } from '@/types'
 
 export const createEvent = async ({ event, userId, path }: CreateEventParams) => {
 	try {
@@ -61,6 +61,47 @@ export const deleteEvent = async ({ eventId, path }: DeleteEventParams) => {
 			},
 		})
 		revalidatePath(path)
+	} catch (error) {
+		handleError(error)
+	}
+}
+
+export const updateEvent = async ({ userId, event, path }: UpdateEventParams) => {
+	try {
+		const eventToUpdate = await prisma.event.findUnique({
+			where: {
+				id: event.id,
+			},
+		})
+		if (!eventToUpdate) {
+			throw new Error('Event not found')
+		}
+		if (eventToUpdate.organizerId !== userId) {
+			throw new Error('You are not authorized to update this event')
+		}
+		const updatedEvent = await prisma.event.update({
+			where: {
+				id: event.id,
+			},
+			data: {
+				title: event.title,
+				imageUrl: event.imageUrl,
+				startDateTime: event.startDateTime,
+				endDateTime: event.endDateTime,
+				description: event.description,
+				price: event.price,
+				isFree: event.isFree,
+				url: event.url,
+				location: event.location,
+				category: {
+					connect: {
+						id: event.categoryId,
+					},
+				},
+			},
+		})
+		revalidatePath(path)
+		return updatedEvent
 	} catch (error) {
 		handleError(error)
 	}

@@ -25,8 +25,8 @@ model User {
 model Event {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   title         String
-  description   String?
-  location      String?
+  description   String
+  location      String
   createdAt     DateTime @default(now())
   imageUrl      String
   startDateTime DateTime @default(now())
