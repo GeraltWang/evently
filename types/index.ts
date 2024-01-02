@@ -1,3 +1,5 @@
+import { Event as Ep } from '@prisma/client'
+
 // ====== USER PARAMS
 export type CreateUserParams = {
 	clerkId: string
@@ -16,6 +18,18 @@ export type UpdateUserParams = {
 }
 
 // ====== EVENT PARAMS
+export interface IEvent extends Ep {
+	category: {
+		id: string
+		name: string
+	}
+	organizer: {
+		id: string
+		firstName: string
+		lastName: string
+	}
+}
+
 export type CreateEventParams = {
 	userId: string
 	event: {
