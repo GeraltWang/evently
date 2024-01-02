@@ -1,5 +1,5 @@
 import { formatDateTime } from '@/lib/utils'
-import { IEvent } from '@/types'
+import { IEvent, UserMeta } from '@/types'
 import { auth } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,7 +13,9 @@ interface Props {
 
 const Card = ({ event, hasOrderLink, hidePrice }: Props) => {
 	const { sessionClaims } = auth()
-	const { userId } = sessionClaims?.userMeta as { userId: string }
+
+	const { userId = '' } = sessionClaims?.userMeta as UserMeta
+
 	const isEventCreator = userId === event.organizerId
 	return (
 		<div className=' group relative flex min-h-[380px] md:min-h-[438px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg'>

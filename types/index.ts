@@ -1,6 +1,10 @@
 import { Event as Ep } from '@prisma/client'
 
 // ====== USER PARAMS
+export interface UserMeta {
+	userId?: string
+}
+
 export type CreateUserParams = {
 	clerkId: string
 	firstName: string

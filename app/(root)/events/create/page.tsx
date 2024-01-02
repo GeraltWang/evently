@@ -1,11 +1,12 @@
 import EventForm from '@/components/shared/EventForm'
+import { UserMeta } from '@/types'
 import { auth } from '@clerk/nextjs'
 import React from 'react'
 
 const CreateEvent = () => {
 	const { sessionClaims } = auth()
 
-	const { userId } = sessionClaims?.userMeta as { userId: string }
+	const { userId = '' } = sessionClaims?.userMeta as UserMeta
 
 	return (
 		<>
