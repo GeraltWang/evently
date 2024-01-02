@@ -14,9 +14,12 @@ interface Props {
 const Card = ({ event, hasOrderLink, hidePrice }: Props) => {
 	const { sessionClaims } = auth()
 
-	const { userId = '' } = sessionClaims?.userMeta as UserMeta
+	const userMeta = sessionClaims?.userMeta as UserMeta
+
+	const userId = userMeta.userId || ''
 
 	const isEventCreator = userId === event.organizerId
+
 	return (
 		<div className=' group relative flex min-h-[380px] md:min-h-[438px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg'>
 			<Link
