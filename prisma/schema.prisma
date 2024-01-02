@@ -36,8 +36,8 @@ model Event {
   url           String?
   category      Category @relation(fields: [categoryId], references: [id])
   categoryId    String   @db.ObjectId
-  organizer     User     @relation(fields: [organizerId], references: [clerkId])
-  organizerId   String
+  organizer     User     @relation(fields: [organizerId], references: [id])
+  organizerId   String   @db.ObjectId
   Order         Order[]
 }
 
