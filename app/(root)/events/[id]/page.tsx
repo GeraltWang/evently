@@ -1,3 +1,4 @@
+import CheckoutButton from '@/components/shared/CheckoutButton'
 import Collection from '@/components/shared/Collection'
 import { getRelatedEventsByCategory, getEventById } from '@/lib/actions/event.actions'
 import { formatDateTime } from '@/lib/utils'
@@ -18,11 +19,11 @@ const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) 
 			<section className='flex justify-center bg-primary-50 bg-dotted-pattern bg-contain'>
 				<div className='grid grid-cols-1 md:grid-cols-2 2xl:max-w-7xl'>
 					<Image
-						className=' h-full min-h-[300px] object-cover object-center'
 						src={event!.imageUrl}
 						alt='Hero Image'
 						width={1000}
 						height={1000}
+						className='h-full min-h-[300px] object-cover object-center'
 					/>
 					<div className='flex w-full flex-col gap-8 p-5 md:p-10'>
 						<div className='flex flex-col gap-6'>
@@ -44,6 +45,7 @@ const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) 
 								</p>
 							</div>
 						</div>
+						<CheckoutButton event={event!} />
 						<div className=' flex flex-col gap-5'>
 							<div className=' flex gap-2 md:gap-3'>
 								<Image src={'/assets/icons/calendar.svg'} alt='calendar' width={32} height={32}></Image>
