@@ -14,9 +14,9 @@ interface Props {
 const Card = ({ event, hasOrderLink, hidePrice }: Props) => {
 	const { sessionClaims } = auth()
 
-	const userMeta = sessionClaims?.userMeta as UserMeta
+	const userMeta = (sessionClaims?.userMeta as UserMeta) || {}
 
-	const userId = userMeta.userId || ''
+	const userId = userMeta?.userId || ''
 
 	const isEventCreator = userId === event.organizerId
 

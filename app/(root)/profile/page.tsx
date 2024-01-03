@@ -1,10 +1,9 @@
-import React from 'react'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
 import Collection from '@/components/shared/Collection'
+import { Button } from '@/components/ui/button'
+import { getEventsByUser } from '@/lib/actions/event.actions'
 import { UserMeta } from '@/types'
 import { auth } from '@clerk/nextjs'
-import { getEventsByUser } from '@/lib/actions/event.actions'
+import Link from 'next/link'
 
 const ProfilePage = async () => {
 	const { sessionClaims } = auth()
