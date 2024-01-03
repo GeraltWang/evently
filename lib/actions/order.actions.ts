@@ -2,7 +2,7 @@
 import Stripe from 'stripe'
 import prisma from '@/prisma/client'
 import { handleError } from '../utils'
-import { CheckoutOrderParams, CreateOrderParams } from '@/types'
+import { CheckoutOrderParams, CreateOrderParams, GetOrdersByEventParams, GetOrdersByUserParams } from '@/types'
 import { redirect } from 'next/navigation'
 
 export const createOrder = async (order: CreateOrderParams) => {
@@ -59,5 +59,75 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
 		redirect(session.url!)
 	} catch (error) {
 		throw error
+	}
+}
+
+export const getOrdersByEvent = async ({ searchString, eventId }: GetOrdersByEventParams) => {}
+
+export const getOrdersByUser = async ({ userId, limit = 6, page = 1 }: GetOrdersByUserParams) => {
+	try {
+		const skip = (Number(page) - 1) * limit
+
+		const orders = await prisma.order.findMany({
+			distinct: ['eventId'],
+			skip,
+			take: limit,
+			where: {
+				buyerId: userId,
+			},
+			orderBy: {
+				createdAt: 'desc',
+			},
+			include: {
+				event: {
+					select: {
+						id: true,
+						title: true,
+						description: true,
+						location: true,
+						imageUrl: true,
+						createdAt: true,
+						startDateTime: true,
+						endDateTime: true,
+						price: true,
+						isFree: true,
+						url: true,
+						category: {
+							select: {
+								id: true,
+								name: true,
+							},
+						},
+						categoryId: true,
+						organizer: {
+							select: {
+								id: true,
+								firstName: true,
+								lastName: true,
+							},
+						},
+						organizerId: true,
+					},
+				},
+			},
+		})
+
+		const totalOrders = await prisma.order.findMany({
+			where: {
+				buyerId: userId,
+			},
+		})
+
+		const uniqueEventIdsLength = Array.from(new Set(totalOrders.map(order => order.eventId))).length
+
+		// 计算总页数
+		const totalPages = Math.ceil(uniqueEventIdsLength / limit)
+
+		return {
+			data: orders,
+			totalPages,
+		}
+	} catch (error) {
+		handleError(error)
 	}
 }
