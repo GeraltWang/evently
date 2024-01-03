@@ -2,7 +2,14 @@
 import prisma from '@/prisma/client'
 import { revalidatePath } from 'next/cache'
 import { handleError } from '../utils'
-import { CreateEventParams, DeleteEventParams, GetAllEventsParams, UpdateEventParams } from '@/types'
+import {
+	CreateEventParams,
+	DeleteEventParams,
+	GetAllEventsParams,
+	GetEventsByUserParams,
+	GetRelatedEventsByCategoryParams,
+	UpdateEventParams,
+} from '@/types'
 
 export const createEvent = async ({ event, userId, path }: CreateEventParams) => {
 	try {
@@ -170,6 +177,114 @@ export const getAllEvents = async ({ query, limit = 6, page, category }: GetAllE
 				},
 			},
 		})
+		return {
+			data: events,
+			totalPages,
+		}
+	} catch (error) {
+		handleError(error)
+	}
+}
+
+export const getEventsByUser = async ({ userId, limit = 6, page }: GetEventsByUserParams) => {
+	try {
+		const skip = (Number(page) - 1) * limit
+
+		// 获取事件总数
+		const totalEvents = await prisma.event.count({
+			where: {
+				organizerId: userId,
+			},
+		})
+
+		// 计算总页数
+		const totalPages = Math.ceil(totalEvents / limit)
+
+		const events = await prisma.event.findMany({
+			skip,
+			take: limit,
+			where: {
+				organizerId: userId,
+			},
+			orderBy: {
+				createdAt: 'desc',
+			},
+			include: {
+				category: {
+					select: {
+						id: true,
+						name: true,
+					},
+				},
+				organizer: {
+					select: {
+						id: true,
+						firstName: true,
+						lastName: true,
+					},
+				},
+			},
+		})
+		return {
+			data: events,
+			totalPages,
+		}
+	} catch (error) {
+		handleError(error)
+	}
+}
+
+export const getRelatedEventsByCategory = async ({
+	categoryId,
+	eventId,
+	limit = 3,
+	page = 1,
+}: GetRelatedEventsByCategoryParams) => {
+	try {
+		const skip = (Number(page) - 1) * limit
+
+		// 获取符合条件的事件总数
+		const totalEvents = await prisma.event.count({
+			where: {
+				categoryId,
+				id: {
+					not: eventId,
+				},
+			},
+		})
+
+		// 计算总页数
+		const totalPages = Math.ceil(totalEvents / limit)
+
+		const events = await prisma.event.findMany({
+			skip,
+			take: limit,
+			orderBy: {
+				createdAt: 'desc',
+			},
+			where: {
+				categoryId,
+				id: {
+					not: eventId,
+				},
+			},
+			include: {
+				category: {
+					select: {
+						id: true,
+						name: true,
+					},
+				},
+				organizer: {
+					select: {
+						id: true,
+						firstName: true,
+						lastName: true,
+					},
+				},
+			},
+		})
+
 		return {
 			data: events,
 			totalPages,
