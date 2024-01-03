@@ -11,6 +11,7 @@ export const createOrder = async (order: CreateOrderParams) => {
 			data: {
 				stripeId: order.stripeId,
 				totalAmount: order.totalAmount,
+				createdAt: order.createdAt,
 				event: {
 					connect: {
 						id: order.eventId,
