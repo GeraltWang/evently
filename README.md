@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+I built this app step by step by following the video called [`Build and Deploy a Full Stack Next 14 MERN Events App with Stripe, Typescript, Tailwind`](https://www.youtube.com/watch?v=zgGhzuBZOQg), and i add one feature which is replaced the original `MongoDB` with `Prisma`. Feel free to check out my [demo](https://evently-dusky-eight.vercel.app/). Hope my code can help you, and thank you [JavaScript Mastery](https://www.youtube.com/@javascriptmastery) for providing such a great content.
+
 ## Getting Started
 
 First, run the development server:
