@@ -36,7 +36,7 @@ const Checkout = ({ event, userId }: Props) => {
 	}
 
 	return (
-		<form action={onCheckout} method='post'>
+		<form onSubmit={onCheckout}>
 			<Button type='submit' role='link' size={'lg'} className=' button sm:w-fit'>
 				{event.isFree ? 'Get Ticket' : 'Buy Ticket'}
 			</Button>
