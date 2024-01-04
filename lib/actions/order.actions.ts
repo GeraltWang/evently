@@ -62,7 +62,38 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
 	}
 }
 
-export const getOrdersByEvent = async ({ searchString, eventId }: GetOrdersByEventParams) => {}
+export const getOrdersByEvent = async ({ searchString, eventId }: GetOrdersByEventParams) => {
+	try {
+		const orders = prisma.order.findMany({
+			where: {
+				eventId,
+				event: {
+					title: {
+						contains: searchString,
+						mode: 'insensitive',
+					},
+				},
+			},
+			include: {
+				event: {
+					select: {
+						title: true,
+					},
+				},
+				buyer: {
+					select: {
+						email: true,
+						firstName: true,
+						lastName: true,
+					},
+				},
+			},
+		})
+		return orders
+	} catch (error) {
+		handleError(error)
+	}
+}
 
 export const getOrdersByUser = async ({ userId, limit = 6, page = 1 }: GetOrdersByUserParams) => {
 	try {
