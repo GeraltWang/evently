@@ -16,7 +16,7 @@ const OrdersPage = async ({ searchParams }: SearchParamProps) => {
 				<h3 className='wrapper h3-bold text-center sm:text-left '>Orders</h3>
 			</section>
 			<section className='wrapper mt-8'>
-				<Search placeholder='Search buyer name...' />
+				<Search placeholder='Search buyer name or email' />
 			</section>
 			<section className='wrapper overflow-x-auto'>
 				<table className='w-full border-collapse border-t'>
@@ -25,6 +25,7 @@ const OrdersPage = async ({ searchParams }: SearchParamProps) => {
 							<th className='min-w-[250px] py-3 text-left'>Order ID</th>
 							<th className='min-w-[200px] flex-1 py-3 pr-4 text-left'>Event Title</th>
 							<th className='min-w-[150px] py-3 pr-4 text-left'>Buyer</th>
+							<th className='min-w-[150px] py-3 pr-4 text-left'>Email</th>
 							<th className='min-w-[100px] py-3 text-left'>Created</th>
 							<th className='min-w-[100px] py-3 text-right'>Amount</th>
 						</tr>
@@ -46,11 +47,8 @@ const OrdersPage = async ({ searchParams }: SearchParamProps) => {
 									>
 										<td className='min-w-[250px] py-4 text-primary-500'>{row.id}</td>
 										<td className='min-w-[200px] flex-1 py-4 pr-4'>{row.event.title}</td>
-										<td className='min-w-[150px] py-4 pr-4'>
-											{row.buyer.firstName || row.buyer.lastName
-												? `${row.buyer.firstName} ${row.buyer.lastName}`
-												: row.buyer.email}
-										</td>
+										<td className='min-w-[150px] py-4 pr-4'>{`${row.buyer.firstName} ${row.buyer.lastName}`}</td>
+										<td className='min-w-[150px] py-4 pr-4'>{row.buyer.email}</td>
 										<td className='min-w-[100px] py-4'>{formatDateTime(row.createdAt).dateTime}</td>
 										<td className='min-w-[100px] py-4 text-right'>{formatPrice(row.totalAmount)}</td>
 									</tr>

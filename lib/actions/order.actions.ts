@@ -64,14 +64,32 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
 
 export const getOrdersByEvent = async ({ searchString, eventId }: GetOrdersByEventParams) => {
 	try {
+		if (!eventId) throw new Error('Event ID is required')
+
 		const orders = prisma.order.findMany({
 			where: {
 				eventId,
-				event: {
-					title: {
-						contains: searchString,
-						mode: 'insensitive',
-					},
+				buyer: {
+					OR: [
+						{
+							firstName: {
+								contains: searchString,
+								mode: 'insensitive',
+							},
+						},
+						{
+							lastName: {
+								contains: searchString,
+								mode: 'insensitive',
+							},
+						},
+						{
+							email: {
+								contains: searchString,
+								mode: 'insensitive',
+							},
+						},
+					],
 				},
 			},
 			include: {
