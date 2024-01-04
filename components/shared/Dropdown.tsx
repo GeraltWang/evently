@@ -1,5 +1,3 @@
-import React, { startTransition, useEffect, useState } from 'react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -11,9 +9,11 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Prisma } from '@prisma/client'
-import { Input } from '../ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { createCategory, getAllCategories } from '@/lib/actions/category.actions'
+import { Category } from '@prisma/client'
+import { startTransition, useEffect, useState } from 'react'
+import { Input } from '../ui/input'
 
 interface Props {
 	value?: string
@@ -21,18 +21,7 @@ interface Props {
 }
 
 const Dropdown = ({ value, onChangeHandler }: Props) => {
-	const [categories, setCategories] = useState<Prisma.CategoryCreateInput[]>([
-		// { id: '1', name: 'Category 1' },
-		// { id: '2', name: 'Category 2' },
-		// { id: '3', name: 'Category 3' },
-		// { id: '4', name: 'Category 4' },
-		// { id: '5', name: 'Category 5' },
-		// { id: '6', name: 'Category 6' },
-		// { id: '7', name: 'Category 7' },
-		// { id: '8', name: 'Category 8' },
-		// { id: '9', name: 'Category 9' },
-		// { id: '10', name: 'Category 10' },
-	])
+	const [categories, setCategories] = useState<Category[]>([])
 
 	const [newCategory, setCategory] = useState('')
 

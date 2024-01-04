@@ -13,7 +13,7 @@ interface Props {
 const UpdateEvent = async ({ params: { id } }: Props) => {
 	const { sessionClaims } = auth()
 
-	const userMeta = sessionClaims?.userMeta as UserMeta
+	const userMeta = (sessionClaims?.userMeta as UserMeta) || {}
 
 	const userId = userMeta.userId || ''
 

@@ -1,9 +1,9 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import { formUrlQuery, removeKeysFromQuery } from '@/lib/utils'
+import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 const Search = ({ placeholder = 'Search title...' }: { placeholder?: string }) => {
 	const [query, setQuery] = useState('')

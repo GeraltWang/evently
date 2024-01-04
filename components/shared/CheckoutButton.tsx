@@ -1,8 +1,7 @@
 'use client'
+import { Button } from '@/components/ui/button'
 import { IEvent } from '@/types'
 import { SignedIn, SignedOut, useUser } from '@clerk/nextjs'
-import React from 'react'
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import Checkout from './Checkout'
 

@@ -1,10 +1,10 @@
 'use client'
-import React, { useEffect, useState } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { formUrlQuery, removeKeysFromQuery } from '@/lib/utils'
 import { getAllCategories } from '@/lib/actions/category.actions'
+import { formUrlQuery, removeKeysFromQuery } from '@/lib/utils'
 import { Category } from '@prisma/client'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 const CategoryFilter = () => {
 	const searchParams = useSearchParams()

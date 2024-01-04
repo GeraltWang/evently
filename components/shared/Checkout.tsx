@@ -1,8 +1,8 @@
-import { IEvent } from '@/types'
-import React, { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { loadStripe } from '@stripe/stripe-js'
 import { checkoutOrder } from '@/lib/actions/order.actions'
+import { IEvent } from '@/types'
+import { loadStripe } from '@stripe/stripe-js'
+import { useEffect } from 'react'
 
 interface Props {
 	event: IEvent
@@ -25,7 +25,6 @@ const Checkout = ({ event, userId }: Props) => {
 	}, [])
 
 	const onCheckout = async () => {
-		console.log('checkout')
 		const order = {
 			eventTitle: event.title,
 			eventId: event.id,

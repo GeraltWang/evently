@@ -1,5 +1,4 @@
 import Search from '@/components/shared/Search'
-import React from 'react'
 
 const OrdersPage = () => {
 	return (

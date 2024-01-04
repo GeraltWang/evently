@@ -1,6 +1,5 @@
-import React from 'react'
-import Card from './Card'
 import { IEvent } from '@/types'
+import Card from './Card'
 
 interface Props {
 	data: IEvent[]
