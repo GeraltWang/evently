@@ -161,6 +161,19 @@ export const getAllEvents = async ({ query, limit = 6, page, category }: GetAllE
 			orderBy: {
 				createdAt: 'desc',
 			},
+			where: {
+				title: {
+					contains: query,
+					// 搜索时忽略大小写
+					mode: 'insensitive',
+				},
+				category: {
+					name: {
+						contains: category,
+						mode: 'insensitive',
+					},
+				},
+			},
 			include: {
 				category: {
 					select: {
@@ -177,6 +190,7 @@ export const getAllEvents = async ({ query, limit = 6, page, category }: GetAllE
 				},
 			},
 		})
+
 		return {
 			data: events,
 			totalPages,
